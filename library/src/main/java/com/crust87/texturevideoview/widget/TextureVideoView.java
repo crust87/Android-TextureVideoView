@@ -23,6 +23,7 @@ package com.crust87.texturevideoview.widget;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
@@ -34,6 +35,7 @@ import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.media.MediaPlayer.OnVideoSizeChangedListener;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Surface;
@@ -43,6 +45,8 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.MediaController.MediaPlayerControl;
 import android.widget.VideoView;
+
+import com.crust87.texturevideoview.R;
 
 import java.io.IOException;
 
@@ -69,6 +73,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     private OnPreparedListener mOnPreparedListener;
 
     // Attributes
+    private String mScaleType;
     private int mVideoWidth;
     private int mVideoHeight;
     private int mCurrentBufferPercentage;
@@ -93,6 +98,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         isPlayable = false;
         mContext = context;
         initVideoView();
+        initAttributes(context, attrs, 0);
     }
 
     public TextureVideoView(Context context, AttributeSet attrs, int defStyle) {
@@ -101,6 +107,13 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         isPlayable = false;
         mContext = context;
         initVideoView();
+        initAttributes(context, attrs, defStyle);
+    }
+
+    private void initAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TextureVideoView, defStyleAttr, 0);
+
+        mScaleType = typedArray.getString(R.styleable.TextureVideoView_scaleType);
     }
     
     @Override
@@ -155,7 +168,12 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     }
 
     private void initVideo() {
-        centerCrop();
+        if(TextUtils.equals(mScaleType, "centerCrop")) {
+            centerCrop();
+        } else if(TextUtils.equals(mScaleType, "centerInside")) {
+            centerInside();
+        }
+
     }
 
     private void centerCrop() {
@@ -172,6 +190,38 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
             float mBoundY = viewHeight - mVideoHeight / mScaleX;
 
             if(mScaleX < mScaleY) {
+                mScaleY = mScaleY * (1.0f / mScaleX);
+                mScaleX = 1.0f;
+                mBoundX = 0;
+            } else {
+                mScaleX = mScaleX * (1.0f / mScaleY);
+                mScaleY = 1.0f;
+                mBoundY = 0;
+            }
+
+            mMatrix.setScale(mScaleX, mScaleY);
+            mMatrix.postTranslate(mBoundX / 2, mBoundY / 2);
+
+            setTransform(mMatrix);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void centerInside() {
+        try {
+            Matrix mMatrix = new Matrix();
+
+            int viewWidth = getWidth();
+            int viewHeight = getHeight();
+
+            float mScaleX = (float) mVideoWidth / viewWidth;
+            float mScaleY = (float) mVideoHeight / viewHeight;
+
+            float mBoundX = viewWidth - mVideoWidth / mScaleY;
+            float mBoundY = viewHeight - mVideoHeight / mScaleX;
+
+            if(mScaleX > mScaleY) {
                 mScaleY = mScaleY * (1.0f / mScaleX);
                 mScaleX = 1.0f;
                 mBoundX = 0;

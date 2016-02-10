@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Android-TextureVideoVIew.iml" filepath="$PROJECT_DIR$/Android-TextureVideoVIew.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android-TextureVideoView.iml" filepath="$PROJECT_DIR$/Android-TextureVideoView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>
