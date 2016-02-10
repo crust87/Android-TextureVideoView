@@ -1,2 +1,2 @@
 # Android-TextureVideoView
-centerCrop and centerInside available now
+fitStart, fitCenter, fitEnd, centerCrop available now
