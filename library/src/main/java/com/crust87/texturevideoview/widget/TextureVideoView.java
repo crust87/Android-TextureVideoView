@@ -1,10 +1,10 @@
 /*
- * Android-CenterCropVideoView
- * https://github.com/crust87/Android-FFmpegExecutor
+ * Android-TextureVideoView
+ * https://github.com/crust87/Android-TextureVideoView
  *
  * Mabi
  * crust87@gmail.com
- * last modify 2016-01-15
+ * last modify 2016-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -215,6 +215,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     }
 
     private void initVideo() {
+        // FIXME dirty code
         switch(mScaleType) {
             case MATRIX:
                 matrix();
@@ -243,6 +244,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         }
     }
 
+    // FIXME dirty code
     private void matrix() {
         try {
             Matrix mMatrix = new Matrix();
@@ -261,6 +263,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         }
     }
 
+    // FIXME dirty code
     private void fitXY() {
         try {
             Matrix mMatrix = new Matrix();
@@ -273,6 +276,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         }
     }
 
+    // FIXME dirty code
     private void center() {
         try {
             Matrix mMatrix = new Matrix();
@@ -295,6 +299,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         }
     }
 
+    // FIXME dirty code
     private void centerCrop() {
         try {
             Matrix mMatrix = new Matrix();
@@ -327,6 +332,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         }
     }
 
+    // FIXME dirty code
     private void centerInside() {
         try {
             Matrix mMatrix = new Matrix();
@@ -353,6 +359,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         }
     }
 
+    // FIXME dirty code
     private void fitStart() {
         try {
             Matrix mMatrix = new Matrix();
@@ -383,6 +390,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         }
     }
 
+    // FIXME dirty code
     private void fitCenter() {
         try {
             Matrix mMatrix = new Matrix();
@@ -415,8 +423,8 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         }
     }
 
+    // FIXME dirty code
     private void fitEnd() {
-        ImageView w;
         try {
             Matrix mMatrix = new Matrix();
 

@@ -1,10 +1,10 @@
 /*
- * Android-CenterCropVideoView
- * https://github.com/crust87/Android-FFmpegExecutor
+ * Android-TextureVideoView
+ * https://github.com/crust87/Android-TextureVideoView
  *
  * Mabi
  * crust87@gmail.com
- * last modify 2016-01-15
+ * last modify 2016-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

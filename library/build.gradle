@@ -1,5 +1,16 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
+publish {
+    userOrg = 'mabi87'
+    groupId = 'com.crust87'
+    artifactId = 'texturevideoview'
+    publishVersion = '1.0.0'
+    desc = 'TextureVideoView with scaleType'
+    website = 'https://github.com/crust87/Android-TextureVideoView'
+    issueTracker = "${website}/issues"
+    repository = "${website}.git"
+}
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"

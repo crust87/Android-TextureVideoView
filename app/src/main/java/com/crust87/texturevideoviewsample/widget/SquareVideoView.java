@@ -1,6 +1,6 @@
 /*
- * Android-CenterCropVideoView
- * https://github.com/crust87/Android-FFmpegExecutor
+ * Android-TextureVideoView
+ * https://github.com/crust87/Android-TextureVideoView
  *
  * Mabi
  * crust87@gmail.com
