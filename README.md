@@ -1,2 +1,2 @@
 # Android-TextureVideoView
-fitStart, fitCenter, fitEnd, centerCrop available now
+all scaleType available now

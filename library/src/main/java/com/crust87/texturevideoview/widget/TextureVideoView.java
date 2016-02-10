@@ -220,6 +220,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
                 matrix();
                 break;
             case FIT_XY:
+                fitXY();
                 break;
             case FIT_START:
                 fitStart();
@@ -231,16 +232,67 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
                 fitEnd();
                 break;
             case CENTER:
+                center();
                 break;
             case CENTER_CROP:
                 centerCrop();
                 break;
             case CENTER_INSIDE:
+                centerInside();
                 break;
         }
     }
 
     private void matrix() {
+        try {
+            Matrix mMatrix = new Matrix();
+
+            int viewWidth = getWidth();
+            int viewHeight = getHeight();
+
+            float mScaleX = (float) mVideoWidth / viewWidth;
+            float mScaleY = (float) mVideoHeight / viewHeight;
+
+            mMatrix.setScale(mScaleX, mScaleY);
+
+            setTransform(mMatrix);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fitXY() {
+        try {
+            Matrix mMatrix = new Matrix();
+
+            mMatrix.setScale(1f, 1f);
+
+            setTransform(mMatrix);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void center() {
+        try {
+            Matrix mMatrix = new Matrix();
+
+            int viewWidth = getWidth();
+            int viewHeight = getHeight();
+
+            float mScaleX = (float) mVideoWidth / viewWidth;
+            float mScaleY = (float) mVideoHeight / viewHeight;
+
+            float mBoundX = viewWidth - mVideoWidth;
+            float mBoundY = viewHeight - mVideoHeight;
+
+            mMatrix.setScale(mScaleX, mScaleY);
+            mMatrix.postTranslate(mBoundX / 2, mBoundY / 2);
+
+            setTransform(mMatrix);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     private void centerCrop() {
@@ -270,6 +322,32 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
             mMatrix.postTranslate(mBoundX / 2, mBoundY / 2);
 
             setTransform(mMatrix);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void centerInside() {
+        try {
+            Matrix mMatrix = new Matrix();
+
+            int viewWidth = getWidth();
+            int viewHeight = getHeight();
+
+            float mScaleX = (float) mVideoWidth / viewWidth;
+            float mScaleY = (float) mVideoHeight / viewHeight;
+
+            if(mScaleX > 1 || mScaleY > 1) {
+                fitCenter();
+            } else {
+                float mBoundX = viewWidth - mVideoWidth;
+                float mBoundY = viewHeight - mVideoHeight;
+
+                mMatrix.setScale(mScaleX, mScaleY);
+                mMatrix.postTranslate(mBoundX / 2, mBoundY / 2);
+
+                setTransform(mMatrix);
+            }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
