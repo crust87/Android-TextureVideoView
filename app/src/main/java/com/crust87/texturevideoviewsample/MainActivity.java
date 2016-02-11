@@ -21,12 +21,21 @@
 
 package com.crust87.texturevideoviewsample;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import com.crust87.texturevideoview.widget.TextureVideoView;
 import com.crust87.texturevideoviewsample.widget.SquareVideoView;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Constants
+    private static final int REQUEST_VIDEO = 1000;
 
     private SquareVideoView mVideoView;
 
@@ -47,13 +56,71 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_open:
+                openImage();
+                return true;
+            case R.id.action_matrix:
+                mVideoView.setScaleType(TextureVideoView.ScaleType.MATRIX);
+                return true;
+            case R.id.action_fitXY:
+                mVideoView.setScaleType(TextureVideoView.ScaleType.FIT_XY);
+                return true;
+            case R.id.action_fitStart:
+                mVideoView.setScaleType(TextureVideoView.ScaleType.FIT_START);
+                return true;
+            case R.id.action_fitCenter:
+                mVideoView.setScaleType(TextureVideoView.ScaleType.FIT_CENTER);
+                return true;
+            case R.id.action_fitEnd:
+                mVideoView.setScaleType(TextureVideoView.ScaleType.FIT_END);
+                return true;
+            case R.id.action_center:
+                mVideoView.setScaleType(TextureVideoView.ScaleType.CENTER);
+                return true;
+            case R.id.action_centerCrop:
+                mVideoView.setScaleType(TextureVideoView.ScaleType.CENTER_CROP);
+                return true;
+            case R.id.action_centerInside:
+                mVideoView.setScaleType(TextureVideoView.ScaleType.CENTER_INSIDE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_VIDEO && resultCode == RESULT_OK) {
+            Uri selectedUri = data.getData();
+
+            mVideoView.setVideoURI(selectedUri);
+            mVideoView.start();
+        }
+    }
+
     private void loadGUI() {
         setContentView(R.layout.activity_main);
         mVideoView = (SquareVideoView) findViewById(R.id.videoClip);
     }
 
     private void init() {
-        new LoadVideoTask(mVideoView, "http://1.255.56.21/media/clip/34/34_197_1bf25bc6fa99c1382d4ad0078d1e2a4b19937e38.mp4", this).execute();
-        mVideoView.start();
+    }
+
+    public void openImage() {
+        Intent lIntent = new Intent(Intent.ACTION_PICK);
+        lIntent.setType("video/*");
+        lIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivityForResult(lIntent, REQUEST_VIDEO);
     }
 }

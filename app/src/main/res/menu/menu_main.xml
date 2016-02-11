@@ -1,0 +1,51 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <item
+        android:id="@+id/action_open"
+        android:icon="@drawable/ic_action_open"
+        android:title="@string/action_open"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_matrix"
+        android:orderInCategory="100"
+        android:title="@string/action_matrix"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_fitXY"
+        android:orderInCategory="100"
+        android:title="@string/action_fitXY"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_fitStart"
+        android:orderInCategory="100"
+        android:title="@string/action_fitStart"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_fitCenter"
+        android:orderInCategory="100"
+        android:title="@string/action_fitCenter"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_fitEnd"
+        android:orderInCategory="100"
+        android:title="@string/action_fitEnd"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_center"
+        android:orderInCategory="100"
+        android:title="@string/action_center"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_centerCrop"
+        android:orderInCategory="100"
+        android:title="@string/action_centerCrop"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_centerInside"
+        android:orderInCategory="100"
+        android:title="@string/action_centerInside"
+        app:showAsAction="never" />
+
+</menu>

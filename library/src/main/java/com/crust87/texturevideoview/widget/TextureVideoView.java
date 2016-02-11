@@ -160,6 +160,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
 
             requestLayout();
             invalidate();
+            initVideo();
         }
     }
 

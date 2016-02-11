@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">Android-TextureVideoVIew</string>
+    <string name="app_name">TextureVideoView</string>
+
+    <!-- Action Bar -->
+    <string name="action_open">Open</string>
+    <string name="action_matrix">Matrix</string>
+    <string name="action_fitXY">Fit XY</string>
+    <string name="action_fitStart">Fit Start</string>
+    <string name="action_fitCenter">Fit Center</string>
+    <string name="action_fitEnd">Fit End</string>
+    <string name="action_center">Center</string>
+    <string name="action_centerCrop">Center Crop</string>
+    <string name="action_centerInside">Center Inside</string>
 </resources>
