@@ -30,14 +30,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.crust87.texturevideoview.widget.TextureVideoView;
-import com.crust87.texturevideoviewsample.widget.SquareVideoView;
 
 public class MainActivity extends AppCompatActivity {
 
     // Constants
     private static final int REQUEST_VIDEO = 1000;
 
-    private SquareVideoView mVideoView;
+    private TextureVideoView mVideoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,16 +101,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_VIDEO && resultCode == RESULT_OK) {
-            Uri selectedUri = data.getData();
+            Uri videoUri = data.getData();
 
-            mVideoView.setVideoURI(selectedUri);
+            mVideoView.setVideoURI(videoUri);
             mVideoView.start();
         }
     }
 
     private void loadGUI() {
         setContentView(R.layout.activity_main);
-        mVideoView = (SquareVideoView) findViewById(R.id.videoClip);
+        mVideoView = (TextureVideoView) findViewById(R.id.videoClip);
     }
 
     private void init() {
