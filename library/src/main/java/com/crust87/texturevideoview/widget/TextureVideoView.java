@@ -792,8 +792,4 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     public void setSound(boolean isSound) {
         this.isSound = isSound;
     }
-
-    public MediaPlayer getMediaPlayer() {
-        return mMediaPlayer;
-    }
 }
