@@ -80,7 +80,6 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     private int mVideoHeight;
     private int mCurrentBufferPercentage;
     private boolean isSound;
-    private boolean isPlayable;
     private Uri uri;
 
     private static final ScaleType[] sScaleTypeArray = {
@@ -98,16 +97,14 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         super(context);
 
         isSound = true;
-        isPlayable = false;
         mContext = context;
         initVideoView();
-        setScaleType(ScaleType.FIT_XY);
+        setScaleType(ScaleType.CENTER_CROP);
     }
 
     public TextureVideoView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         isSound = true;
-        isPlayable = false;
         mContext = context;
         initVideoView();
         initAttributes(context, attrs, 0);
@@ -116,7 +113,6 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     public TextureVideoView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         isSound = true;
-        isPlayable = false;
         mContext = context;
         initVideoView();
         initAttributes(context, attrs, defStyle);
@@ -128,6 +124,8 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         final int index = typedArray.getInt(R.styleable.TextureVideoView_scaleType, -1);
         if (index >= 0) {
             setScaleType(sScaleTypeArray[index]);
+        } else {
+            setScaleType(ScaleType.CENTER_CROP);
         }
     }
 
@@ -218,6 +216,9 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     private void initVideo() {
         // FIXME dirty code
         switch(mScaleType) {
+            case CENTER_CROP:
+                centerCrop();
+                break;
             case MATRIX:
                 matrix();
                 break;
@@ -235,9 +236,6 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
                 break;
             case CENTER:
                 center();
-                break;
-            case CENTER_CROP:
-                centerCrop();
                 break;
             case CENTER_INSIDE:
                 centerInside();
@@ -699,7 +697,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
 
     @Override
     public boolean isPlaying() {
-        return isPlayable && isInPlaybackState() && mMediaPlayer.isPlaying();
+        return isInPlaybackState() && mMediaPlayer.isPlaying();
     }
 
     @Override
@@ -737,7 +735,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         return -1;
     }
 
-    SurfaceTextureListener mSurfaceTextureListener = new SurfaceTextureListener() {
+    private SurfaceTextureListener mSurfaceTextureListener = new SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, final int width, final int height) {
             mSurface = new Surface(surface);
@@ -791,7 +789,11 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         stopPlayback();
     }
 
-    public void setPlayable(boolean pPlayable) {
-        isPlayable = pPlayable;
+    public void setSound(boolean isSound) {
+        this.isSound = isSound;
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mMediaPlayer;
     }
 }
