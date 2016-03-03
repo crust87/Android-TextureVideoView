@@ -3,9 +3,20 @@ all scaleType available now
 
 ## Example
 
-add build.gradle<br />
+add code build.gradle in project<br />
 ``` groovy
-compile 'com.crust87:texturevideoview:1.0.1'
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+```
+
+add code build.gradle in module<br />
+``` groovy
+dependencies {
+    compile 'com.crust87:texturevideoview:1.0.4'
+}
 ```
 
 append your layout xml<br />
