@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package com.crust87.texturevideoviewsample;
+package com.crust87.sample;
 
 import android.content.Intent;
 import android.net.Uri;

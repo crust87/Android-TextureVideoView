@@ -82,6 +82,23 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     private boolean isSound;
     private Uri uri;
 
+    public enum ScaleType {
+        MATRIX(0),
+        FIT_XY(1),
+        FIT_START(2),
+        FIT_CENTER(3),
+        FIT_END(4),
+        CENTER(5),
+        CENTER_CROP(6),
+        CENTER_INSIDE(7);
+
+        ScaleType(int ni) {
+            nativeInt = ni;
+        }
+
+        final int nativeInt;
+    }
+
     private static final ScaleType[] sScaleTypeArray = {
             ScaleType.MATRIX,
             ScaleType.FIT_XY,
@@ -99,7 +116,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         isSound = true;
         mContext = context;
         initVideoView();
-        setScaleType(ScaleType.CENTER_CROP);
+        setScaleType(ScaleType.FIT_CENTER);
     }
 
     public TextureVideoView(final Context context, final AttributeSet attrs) {
@@ -125,25 +142,8 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
         if (index >= 0) {
             setScaleType(sScaleTypeArray[index]);
         } else {
-            setScaleType(ScaleType.CENTER_CROP);
+            setScaleType(ScaleType.FIT_CENTER);
         }
-    }
-
-    public enum ScaleType {
-        MATRIX(0),
-        FIT_XY(1),
-        FIT_START(2),
-        FIT_CENTER(3),
-        FIT_END(4),
-        CENTER(5),
-        CENTER_CROP(6),
-        CENTER_INSIDE(7);
-
-        ScaleType(int ni) {
-            nativeInt = ni;
-        }
-
-        final int nativeInt;
     }
 
     public void setScaleType(ScaleType scaleType) {
@@ -216,6 +216,9 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     private void initVideo() {
         // FIXME dirty code
         switch(mScaleType) {
+            case FIT_CENTER:
+                fitCenter();
+                break;
             case CENTER_CROP:
                 centerCrop();
                 break;
@@ -227,9 +230,6 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
                 break;
             case FIT_START:
                 fitStart();
-                break;
-            case FIT_CENTER:
-                fitCenter();
                 break;
             case FIT_END:
                 fitEnd();
@@ -497,9 +497,9 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
             // TODO: create SubtitleController in MediaPlayer, but we need
             // a context for the subtitle renderers
             if (!isSound) {
-                mMediaPlayer.setVolume(0.0f, 0.0f);
+                mMediaPlayer.setVolume(0f, 0f);
             } else {
-                mMediaPlayer.setVolume(1, 1);
+                mMediaPlayer.setVolume(1f, 1f);
             }
 
             mMediaPlayer.setOnPreparedListener(mPreparedListener);
@@ -791,5 +791,13 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
 
     public void setSound(boolean isSound) {
         this.isSound = isSound;
+
+        if(mMediaPlayer != null) {
+            if (!isSound) {
+                mMediaPlayer.setVolume(0f, 0f);
+            } else {
+                mMediaPlayer.setVolume(1f, 1f);
+            }
+        }
     }
 }

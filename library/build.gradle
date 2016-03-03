@@ -5,7 +5,7 @@ publish {
     userOrg = 'mabi87'
     groupId = 'com.crust87'
     artifactId = 'texturevideoview'
-    publishVersion = '1.0.2'
+    publishVersion = '1.0.4'
     desc = 'TextureVideoView with scaleType'
     website = 'https://github.com/crust87/Android-TextureVideoView'
     issueTracker = "${website}/issues"
@@ -18,8 +18,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 5
+        versionName "1.0.4"
     }
     buildTypes {
         release {
