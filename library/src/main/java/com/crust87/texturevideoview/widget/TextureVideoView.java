@@ -800,4 +800,12 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
             }
         }
     }
+
+    public int getVideoWidth() {
+        return mVideoWidth;
+    }
+
+    public int getVideoHeight() {
+        return mVideoHeight;
+    }
 }
