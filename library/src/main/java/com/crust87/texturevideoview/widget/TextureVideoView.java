@@ -35,7 +35,6 @@ import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.media.MediaPlayer.OnVideoSizeChangedListener;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Surface;
@@ -43,7 +42,6 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.ImageView;
 import android.widget.MediaController.MediaPlayerControl;
 import android.widget.VideoView;
 
@@ -70,7 +68,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     private MediaPlayer mMediaPlayer;
     private Surface mSurface;
     private OnInfoListener mOnInfoListener;
-    private OnCompletionListener mOCompletionListener;
+    private OnCompletionListener mOnCompletionListener;
     private OnErrorListener mOnErrorListener;
     private OnPreparedListener mOnPreparedListener;
 
@@ -79,8 +77,8 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     private int mVideoWidth;
     private int mVideoHeight;
     private int mCurrentBufferPercentage;
-    private boolean isSound;
-    private Uri uri;
+    private boolean mIsSound;
+    private Uri mUri;
 
     public enum ScaleType {
         MATRIX(0),
@@ -113,7 +111,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     public TextureVideoView(final Context context) {
         super(context);
 
-        isSound = true;
+        mIsSound = true;
         mContext = context;
         initVideoView();
         setScaleType(ScaleType.FIT_CENTER);
@@ -121,7 +119,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
 
     public TextureVideoView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
-        isSound = true;
+        mIsSound = true;
         mContext = context;
         initVideoView();
         initAttributes(context, attrs, 0);
@@ -129,7 +127,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
 
     public TextureVideoView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        isSound = true;
+        mIsSound = true;
         mContext = context;
         initVideoView();
         initAttributes(context, attrs, defStyle);
@@ -462,7 +460,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     }
 
     public void setVideoURI(Uri pVideoURI) {
-        uri = pVideoURI;
+        mUri = pVideoURI;
         openVideo();
         requestLayout();
         invalidate();
@@ -479,15 +477,17 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     }
 
     public void openVideo() {
-        if ((uri == null) || (mSurface == null)) {
+        if ((mUri == null) || (mSurface == null)) {
             // not ready for playback just yet, will try again later
             return;
         }
         // Tell the music playback service to pause
         // TODO: these constants need to be published somewhere in the framework.
-        Intent intent = new Intent("com.android.music.musicservicecommand");
-        intent.putExtra("command", "pause");
-        mContext.sendBroadcast(intent);
+        if (mIsSound) {
+            Intent intent = new Intent("com.android.music.musicservicecommand");
+            intent.putExtra("command", "pause");
+            mContext.sendBroadcast(intent);
+        }
 
         // we shouldn't clear the target state, because somebody might have
         // called start() previously
@@ -496,7 +496,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
             mMediaPlayer = new MediaPlayer();
             // TODO: create SubtitleController in MediaPlayer, but we need
             // a context for the subtitle renderers
-            if (!isSound) {
+            if (!mIsSound) {
                 mMediaPlayer.setVolume(0f, 0f);
             } else {
                 mMediaPlayer.setVolume(1f, 1f);
@@ -509,7 +509,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
             mMediaPlayer.setOnInfoListener(mInfoListener);
             mMediaPlayer.setOnBufferingUpdateListener(mBufferingUpdateListener);
             mCurrentBufferPercentage = 0;
-            mMediaPlayer.setDataSource(mContext, uri);
+            mMediaPlayer.setDataSource(mContext, mUri);
             mMediaPlayer.setSurface(mSurface);
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
@@ -575,8 +575,8 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
             mCurrentState = STATE_PLAYBACK_COMPLETED;
             mTargetState = STATE_PLAYBACK_COMPLETED;
 
-            if (mOCompletionListener != null) {
-                mOCompletionListener.onCompletion(mMediaPlayer);
+            if (mOnCompletionListener != null) {
+                mOnCompletionListener.onCompletion(mMediaPlayer);
             }
         }
     };
@@ -619,7 +619,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     }
 
     public void setOnCompletionListener(OnCompletionListener listener) {
-        mOCompletionListener = listener;
+        mOnCompletionListener = listener;
     }
 
     public void setOnErrorListener(OnErrorListener listener) {
@@ -790,7 +790,7 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl 
     }
 
     public void setSound(boolean isSound) {
-        this.isSound = isSound;
+        this.mIsSound = isSound;
 
         if(mMediaPlayer != null) {
             if (!isSound) {
